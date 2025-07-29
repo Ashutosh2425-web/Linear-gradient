@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Awesome Gradient Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      width: 100%;
+      height: 100vh;
+      background-image: linear-gradient(to right, #051937, #a8eb12);
+      background-size: 300% 300%;
+      animation: moveGradient 10s infinite linear;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    @keyframes moveGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    section {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      opacity: 0.95;
+    }
+    button:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .copycode {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: white;
+      border-radius: 10px;
+      font-weight: bold;
+      word-break: break-word;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .preview {
+      width: 90%;
+      max-width: 400px;
+      height: 100px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    select {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #f0f0f0;
+    }
+    @media (max-width: 500px) {
+      button {
+        width: 100%;
+        max-width: 100%;
+      }
+      .preview {
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <div>
+      <button id="mybutton">#051937</button>
+      <button id="mybutton2">#008793</button>
+      <button id="mybutton3">Random Gradient</button>
+    </div>
+    <select id="direction">
+      <option value="to right">To Right</option>
+      <option value="to bottom">To Bottom</option>
+      <option value="to left">To Left</option>
+      <option value="to top">To Top</option>
+      <option value="to right top">To Right Top</option>
+      <option value="to left bottom">To Left Bottom</option>
+    </select>
+    <div class="preview"></div>
+    <h2>Copy Your Code Here</h2>
+    <div class="copycode">
+      background-image: linear-gradient(to right, rgb(92,145,229), rgb(152,63,198));
+    </div>
+    <button onclick="location.reload()">Reset</button>
+  </section>
+  <script>
+    let btn1 = document.getElementById("mybutton");
+    let btn2 = document.getElementById("mybutton2");
+    let btn3 = document.getElementById("mybutton3");
+    let copydiv = document.querySelector(".copycode");
+    let preview = document.querySelector(".preview");
+    let directionSelect = document.getElementById("direction");
+    let rgb1 = "rgb(92,145,229)";
+    let rgb2 = "rgb(152,63,198)";
+    const myHexaValues = () => {
+      const hex = "0123456789abcdef";
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += hex[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    };
+    const updateGradient = () => {
+      const direction = directionSelect.value;
+      const gradient = `linear-gradient(${direction}, ${rgb1}, ${rgb2})`;
+      document.body.style.backgroundImage = gradient;
+      preview.style.backgroundImage = gradient;
+      copydiv.innerText = `background-image: ${gradient};`;
+    };
+    const handleButton1 = () => {
+      rgb1 = myHexaValues();
+      btn1.innerText = rgb1;
+      updateGradient();
+    };
+    const handleButton2 = () => {
+      rgb2 = myHexaValues();
+      btn2.innerText = rgb2;
+      updateGradient();
+    };
+    const handleButton3 = () => {
+      rgb1 = myHexaValues();
+      rgb2 = myHexaValues();
+      btn1.innerText = rgb1;
+      btn2.innerText = rgb2;
+      updateGradient();
+    };
+    btn1.addEventListener("click", handleButton1);
+    btn2.addEventListener("click", handleButton2);
+    btn3.addEventListener("click", handleButton3);
+    directionSelect.addEventListener("change", updateGradient);
+    copydiv.addEventListener("click", () => {
+      navigator.clipboard.writeText(copydiv.innerText);
+      alert("Gradient CSS copied to clipboard!");
+    });
+    updateGradient();
+  </script>
+</body>
+</html>
